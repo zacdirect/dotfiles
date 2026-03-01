@@ -1,0 +1,7 @@
+{
+  "env": {
+    "CLAUDE_CODE_THEME": "dark",
+    "DISABLE_AUTOUPDATER": "1"
+  },
+  "forceLoginMethod": "console"
+}

@@ -1,0 +1,14 @@
+{{- $key := env "ANTHROPIC_API_KEY" -}}
+{{- $suffix := "" -}}
+{{- if gt (len $key) 20 -}}
+{{-   $suffix = substr (sub (len $key) 20) (len $key) $key -}}
+{{- end -}}
+{
+  "hasCompletedOnboarding": true,
+  "autoUpdates": false,
+  "userID": "{{ env "CLAUDE_USER_ID" }}",
+  "customApiKeyResponses": {
+    "approved": [{{ if $suffix }}"{{ $suffix }}"{{ end }}],
+    "rejected": []
+  }
+}
