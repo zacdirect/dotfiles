@@ -1,0 +1,24 @@
+#!/bin/bash
+# Passes existing .bashrc through, appends custom config if not already present.
+# chezmoi runs this with the current .bashrc on stdin; stdout becomes the new file.
+
+MARKER="# --- chezmoi-managed customizations ---"
+
+# Emit existing content
+cat
+
+# Only append if we haven't already
+if ! grep -qF "$MARKER" "$HOME/.bashrc" 2>/dev/null; then
+cat <<'EOF'
+
+# --- chezmoi-managed customizations ---
+
+# Python aliases
+alias python=python3
+alias pip=pip3
+
+# Virtual environment helpers
+alias venv='python3 -m venv'
+alias activate='source bin/activate'
+EOF
+fi

@@ -1,0 +1,13 @@
+{{- $raw := env "SSH_PRIVATE_KEY" | trim -}}
+{{- /* Strip header/footer if present so we can normalize the body */ -}}
+{{- $body := $raw -}}
+{{- if hasPrefix "-----BEGIN" $body -}}
+{{-   $body = $body | trimPrefix "-----BEGIN OPENSSH PRIVATE KEY-----" | trimSuffix "-----END OPENSSH PRIVATE KEY-----" | trim -}}
+{{- end -}}
+{{- /* Remove any whitespace (collapsed newlines, spaces) from the base64 body */ -}}
+{{- $body = regexReplaceAll "\\s+" $body "" -}}
+{{- /* Re-wrap at 70 characters per line */ -}}
+{{- $body = regexReplaceAll "(.{70})" $body "${1}\n" -}}
+-----BEGIN OPENSSH PRIVATE KEY-----
+{{ $body | trim }}
+-----END OPENSSH PRIVATE KEY-----

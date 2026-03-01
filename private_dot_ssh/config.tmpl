@@ -1,0 +1,8 @@
+Host github.com
+    IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_ed25519
+    IdentitiesOnly yes
+
+Host *
+    Compression yes
+    ServerAliveInterval 15
+    ServerAliveCountMax 3
