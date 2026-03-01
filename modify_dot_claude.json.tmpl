@@ -1,0 +1,20 @@
+{{- $existing := dict -}}
+{{- if .chezmoi.stdin -}}
+{{-   $existing = .chezmoi.stdin | fromJson -}}
+{{- end -}}
+{{- $key := env "ANTHROPIC_API_KEY" -}}
+{{- $suffix := "" -}}
+{{- if gt (len $key) 20 -}}
+{{-   $suffix = substr (sub (len $key) 20) (len $key) $key -}}
+{{- end -}}
+{{- $_ := set $existing "hasCompletedOnboarding" true -}}
+{{- $_ := set $existing "autoUpdates" false -}}
+{{- $userId := env "CLAUDE_USER_ID" -}}
+{{- if $userId -}}
+{{-   $_ := set $existing "userID" $userId -}}
+{{- end -}}
+{{- if $suffix -}}
+{{-   $responses := dict "approved" (list $suffix) "rejected" (list) -}}
+{{-   $_ := set $existing "customApiKeyResponses" $responses -}}
+{{- end -}}
+{{ $existing | toPrettyJson }}
